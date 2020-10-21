@@ -64,15 +64,27 @@ app.route("/articles")
 ///////////////////////////////////////////////////////////////////////////Requests targeting a specific article/////////////////////////////////////////////////////////////////////
 
 
-app.route("/articles/:article")
+app.route("/articles/:articleTitle")
 
 .get(function(req, res){
 
-  Article.findOne({title: req.params.article}, function(err, foundArticle){
+  Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
     if (foundArticle){
       res.send(foundArticle)
     } else {
       res.send("Error: 404; No articles matching that title was found.")
+    };
+  });
+})
+
+.put(function(req, res){
+  Article.update(
+    {title: req.params.articleTitle},
+    {title: req.body.title, content:req.body.content},
+    {overwrite: true},
+    function(err){
+    if (!err){
+      res.send("Successfully updated article");
     };
   });
 });
