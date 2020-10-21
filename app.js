@@ -23,7 +23,7 @@ const articlesSchema = {
 
 
 const Article = mongoose.model("Article", articlesSchema);
-
+///////////////////////////////////////////////////////////////////////////Requests targeting all articles/////////////////////////////////////////////////////////////////////
 app.route("/articles")
 
 .get(function(req, res){
@@ -61,5 +61,20 @@ app.route("/articles")
       };
     });
   });
+///////////////////////////////////////////////////////////////////////////Requests targeting a specific article/////////////////////////////////////////////////////////////////////
+
+
+app.route("/articles/:article")
+
+.get(function(req, res){
+
+  Article.findOne({title: req.params.article}, function(err, foundArticle){
+    if (foundArticle){
+      res.send(foundArticle)
+    } else {
+      res.send("Error: 404; No articles matching that title was found.")
+    };
+  });
+});
 
 app.listen(3000, function() {console.log("Server started on port 3000");});
